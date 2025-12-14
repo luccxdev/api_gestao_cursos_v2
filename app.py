@@ -34,5 +34,17 @@ def obter_curso(id):
         if curso['id'] == id:
             return jsonify(curso), 200
     return jsonify({"erro": "Curso não encontrado"}), 404
+
+# Rota PUT - Atualizar curso
+@app.route('/cursos/<int:id>', methods=['PUT'])
+def atualizar_curso(id):
+    dados = request.get_json()
+    for curso in cursos:
+        if curso['id'] == id:
+            curso['nome'] = dados.get('nome', curso['nome'])
+            curso['descricao'] = dados.get('descricao', curso['descricao'])
+            curso['instrutor'] = dados.get('instrutor', curso['instrutor'])
+            return jsonify(curso), 200
+    return jsonify({"erro": "Curso não encontrado"}), 404
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
